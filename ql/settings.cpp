@@ -20,8 +20,19 @@
 */
 
 #include <ql/settings.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
 
 namespace QuantLib {
+ 
+ // Thread dependent seesion ID
+    int sessionId()
+    {
+        std::string threadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+        unsigned long threadNumber = 0;
+        sscanf(threadId.c_str(), "%lx", &threadNumber);
+        return (int)threadNumber;
+    }
 
     Settings::DateProxy::DateProxy()
     : ObservableValue<Date>(Date()) {}
